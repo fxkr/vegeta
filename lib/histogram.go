@@ -1,6 +1,7 @@
 package vegeta
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -33,6 +34,11 @@ func (h *Histogram) Add(r *Result) {
 
 	h.Total++
 	h.Counts[i]++
+}
+
+// MarshalJSON returns a JSON encoding of the list of counts.
+func (h *Histogram) MarshalJSON() ([]byte, error) {
+	return json.Marshal(h.Counts)
 }
 
 // Nth returns the nth bucket represented as a string.
