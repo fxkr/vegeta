@@ -66,3 +66,7 @@ func TestBuckets_UnmarshalText(t *testing.T) {
 		}
 	}
 }
+
+func TestBuckets_AutoLogBinning(t *testing.T) {
+	t.Parallel()
+}

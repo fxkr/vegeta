@@ -363,6 +363,8 @@ Options:
   --type    Which report type to generate (text | json | hist[buckets]).
             [default: text]
 
+  --hist    Histogram buckets, e.g.: '[0,1ms,10ms]'
+
   --every   Write the report to --output at every given interval (e.g 100ms)
             The default of 0 means the report will only be written after
             all results have been processed. [default: 0]
@@ -434,6 +436,7 @@ The `Error Set` shows a unique set of errors returned by all issued requests. Th
     "99th": 3530000,
     "max": 3660505
   },
+  "hist": [0, 0, 10, 46, 44, 0],
   "bytes_in": {
     "total": 606700,
     "mean": 6067
@@ -456,6 +459,8 @@ The `Error Set` shows a unique set of errors returned by all issued requests. Th
   "errors": []
 }
 ```
+
+If the `-hist` parameter is not present, the `hist` field is omitted.
 
 #### `report -type=hist`
 

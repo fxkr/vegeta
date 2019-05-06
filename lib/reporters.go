@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math"
 	"sort"
 	"strings"
 	"text/tabwriter"
@@ -37,10 +38,26 @@ func NewHistogramReporter(h *Histogram) Reporter {
 			return err
 		}
 
+		var maxCount uint64
+		for _, count := range h.Counts {
+			if count > maxCount {
+				maxCount = count
+			}
+		}
+
 		for i, count := range h.Counts {
-			ratio := float64(count) / float64(h.Total)
+			var ratio float64
+			ratio = float64(count) / float64(h.Total)
+
+			var visualRatio float64
+			if h.Exponent == 0 {
+				visualRatio = float64(count) / float64(maxCount)
+			} else {
+				visualRatio = math.Log(float64(count)) / math.Log(float64(maxCount))
+			}
+
 			lo, hi := h.Buckets.Nth(i)
-			pad := strings.Repeat("#", int(ratio*75))
+			pad := strings.Repeat("#", int(visualRatio*75))
 			_, err = fmt.Fprintf(tw, "[%s,\t%s]\t%d\t%.2f%%\t%s\n", lo, hi, count, ratio*100, pad)
 			if err != nil {
 				return nil
